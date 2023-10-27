@@ -1,0 +1,103 @@
+﻿@model PagedList.IPagedList<ProjectSWT.EF.User>
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "Quản lý người dùng";
+    Layout = "~/Areas/Admin/Views/Shared/LayoutMain.cshtml";
+}
+@section Header{
+    Danh sách người dùng
+}
+
+@using (Html.BeginForm("Index", "User", FormMethod.Get))
+            {
+                <div class="input-group">
+                    <input type="search" class="form-control rounded" placeholder="Tìm kiếm Tên tài khoản" aria-label="Search" aria-describedby="search-addon" name="searchString" value="@ViewBag.SearchString" />
+                    <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+                </div>
+            }
+<div class="row">
+    <div class="col-lg-12">
+        <table class="table">
+            <thead>
+                <tr class="table-active">
+                    <th>Tên tài khoản</th>
+                    <th>Mật khẩu</th>
+                    <th>Email</th>
+                    <th>Số điện thoại</th>
+                    <th>Ngày tạo</th>
+                    <th>Trạng thái</th>
+                    <th>Chỉnh sửa</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="row_@item.ID">
+                        <td>@item.Username</td>
+                        <td>@item.Password</td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td>@item.CreateDate</td>
+                        <td>@item.Status</td>
+                        <td>
+                            <a href="#" onclick="if (confirm('Bạn có chắc chắn muốn cập nhật ?') == true) { location.href='/Admin/User/Edit/@item.ID'}">Cập nhật</a>
+                            |
+                            <a href="#" onclick="if (confirm('Bạn có chắc chắn muốn xóa ?') == true) { location.href='/Admin/User/Delete/@item.ID'}">Xóa</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </center>
+            <div id="container" style="margin-left: 20px">
+                <p></p>
+                <p></p>
+                <div class="pagination" style="margin-left: 400px">
+                    @Html.PagedListPager(Model, Page => Url.Action("Index", new { Page, @ViewBag.SearchString }))
+                </div>
+        </div>
+        
+    </div>
+</div>
+
+<style>
+    a {
+        color: red;
+    }
+
+    * {
+        list-style-type: none;
+    }
+
+    .ul.pagination {
+        display: inline-block;
+        padding: 0;
+        margin: 0;
+    }
+
+    ul.pagination li {
+        display: inline;
+    }
+
+        ul.pagination li a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+            ul.pagination li a.active {
+                background-color: #4CAF50;
+                color: white;
+            }
+
+            ul.pagination li a:hover:not(.active) {
+                background-color: #ddd;
+            }
+
+    .input-group {
+        width: 25%;
+        margin-bottom:10px;
+    }
+</style>
